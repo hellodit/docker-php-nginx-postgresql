@@ -1,0 +1,47 @@
+version: '3.5'
+services:
+  web-app:
+    build:
+     context: ./
+    image: hellodit/docker-nginx-php
+    container_name: web-app
+    hostname: web-app
+    depends_on:
+      - web-app-db
+    restart: always
+    ports:
+      - "8010:80"
+    volumes:
+      - ./web-app:/var/www/app
+      - ./php:/usr/local/etc/php
+    restart: always
+    networks:
+     web-app_net:
+       ipv4_address: 172.35.0.2
+
+  web-app-db:
+    image: 'postgres:12.1'
+    container_name: web-app_db
+    hostname: web-app-db
+    environment:
+      - POSTGRES_USER=web-app
+      - POSTGRES_PASSWORD=web-app123
+      - POSTGRES_DB=web-app
+    restart: always
+    ports:
+      - "21543:5432"
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    restart: always
+    networks:
+     web-app_net:
+       ipv4_address: 172.35.0.3
+
+networks:
+  web-app_net:
+    name : web-app_net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.35.0.0/24
