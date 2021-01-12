@@ -33,9 +33,9 @@ RUN	\
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
 
-COPY ./configs/nginx.conf ${NGINX_CONF_DIR}/nginx.conf
-COPY ./configs/app.conf ${NGINX_CONF_DIR}/sites-enabled/app.conf
-COPY ./configs/www.conf /etc/php/7.3/fpm/pool.d/www.conf
+COPY ./nginx-conf/nginx.conf ${NGINX_CONF_DIR}/nginx.conf
+COPY ./nginx-conf/app.conf ${NGINX_CONF_DIR}/sites-enabled/app.conf
+COPY ./nginx-conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
 WORKDIR /var/www/app/
 
